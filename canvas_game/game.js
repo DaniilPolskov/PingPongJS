@@ -59,12 +59,19 @@ let game = {
 
         this.preloadSprites(onResourceLoad);
         this.preloadAudio(onResourceLoad);
+
     },
     preloadSprites(onResourceLoad){
         for (let key in this.sprites){
             this.sprites[key] = new Image();
             this.sprites[key].src = "img/" + key + ".png";
             this.sprites[key].addEventListener("load", onResourceLoad);
+        }
+    },
+    preloadAudio(onResourceLoad) {
+        for (let key in this.sounds) {
+            this.sounds[key] = new Audio("sounds/" + key + ".mp3");
+            this.sounds[key].addEventListener("canplaythrough", onResourceLoad, {once: true});
         }
     },
     create(){
@@ -116,7 +123,7 @@ let game = {
                 this.update();
                 this.render();
                 this.run();
-            });
+            });            
         }
     },
     render() {
@@ -156,10 +163,11 @@ game.ball = {
     width: 20,
     height: 20,
     start() {
+        this.frame = 0;
         this.dy = -this.velocity;
         this.dx = game.random(-this.velocity, this.velocity);
         this.animate();
-    },
+    },    
     animate() {
         setInterval(() => {
             ++this.frame;
